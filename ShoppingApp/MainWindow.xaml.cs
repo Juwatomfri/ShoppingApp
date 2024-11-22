@@ -1,4 +1,5 @@
-﻿using ShoppingApp.Models;
+﻿using ShoppingApp.BLL.Factories;
+using ShoppingApp.Models;
 using System.Linq;
 using System.Text;
 using System.Windows;
@@ -21,15 +22,13 @@ namespace ShoppingApp
         public MainWindow()
         {
             InitializeComponent();
-            ApplicationContext applicationContext = new ApplicationContext();
-            applicationContext.Shops.Add(new Shop(1, "Дикси", "Ладожская 12"));
-            Product product = new Product(3432, "Ipad", 1, 5, 334.5);
+            ApplicationDbContext applicationContext = new ApplicationDbContext();
+            ShopFactory shopFactory = new ShopFactory();
+            ProductFactory productFactory = new ProductFactory();
+            shopFactory.AddToDatabase(shopFactory.CreateEntity("Дикси", "Ладожская 14"), applicationContext);
+            shopFactory.AddToDatabase(shopFactory.CreateEntity("Магнит", "Ладожская 14"), applicationContext);
+            productFactory.AddToDatabase(productFactory.CreateEntity("Ножницы \'Кусь\'", 2, 15, 215.45), applicationContext);
             applicationContext.SaveChanges();
-        }
-
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-
         }
     }
 }

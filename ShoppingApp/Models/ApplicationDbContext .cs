@@ -1,11 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ShoppingApp.Models;
 
-public class ApplicationContext : DbContext
+public class ApplicationDbContext : DbContext
 {
     public DbSet<Shop> Shops { get; set; }
     public DbSet<Product> Products { get; set; }
-    public ApplicationContext()
+    public ApplicationDbContext()
     {
         Database.EnsureDeleted();
         Database.EnsureCreated();
