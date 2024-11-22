@@ -1,0 +1,201 @@
+﻿<Window x:Class="ShoppingApp.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ShoppingApp"
+        mc:Ignorable="d"
+        Title="ShoppingApp" Height="723" Width="1184">
+    <Grid Margin="0,10,0,-6">
+        <Grid.RowDefinitions>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="395*"></ColumnDefinition>
+            <ColumnDefinition Width="394*"></ColumnDefinition>
+            <ColumnDefinition Width="395*"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <TextBlock Grid.Row="0" Text="Добавить объекты в базу данных" FontSize="20" FontWeight="Bold" 
+               HorizontalAlignment="Center" Margin="0,0,0,191" Foreground="#04859D" Width="330"/>
+
+        <!-- Кнопка "Добавить магазин" -->
+        <Button Margin="0,67,0,112" FontSize="15" FontWeight="SemiBold" Width="374"
+            Background="#FF8073" Foreground="Black" Padding="0" BorderBrush="Transparent" Cursor="Hand" Click="Button_Click" HorizontalAlignment="Center">
+            <Button.Template>
+                <ControlTemplate TargetType="Button">
+                    <Border CornerRadius="20" Background="{TemplateBinding Background}" 
+                        BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="1">
+                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                    </Border>
+                </ControlTemplate>
+            </Button.Template>
+            Добавить магазин
+        </Button>
+
+        <!-- Кнопка "Добавить товар" -->
+        <Button Margin="0,127,0,52" FontSize="15" FontWeight="SemiBold" Width="374"
+            Background="#FFD373" Foreground="Black" Padding="0" BorderBrush="Transparent" Cursor="Hand" Click="Button_Click" HorizontalAlignment="Center">
+            <Button.Template>
+                <ControlTemplate TargetType="Button">
+                    <Border CornerRadius="20" Background="{TemplateBinding Background}" 
+                        BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="1">
+                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                    </Border>
+                </ControlTemplate>
+            </Button.Template>
+            Добавить товар
+        </Button>
+
+        <!-- StackPanel для добавления магазина -->
+        <!--<StackPanel x:Name="newShopBlock" Visibility="Visible" Grid.Row="1" Grid.Column="0" Margin="20"  Grid.RowSpan="2">
+            <TextBlock Text="Введите данные нового магазина:" FontSize="20" FontWeight="Bold" Margin="5,10,5,0" Foreground="#04859D"/>
+             Поле Name 
+            <TextBlock Text="Название:" FontSize="15" FontWeight="Bold" Foreground="#04859D" 
+               Margin="5,10,5,0" />
+            <TextBox Margin="5" Padding="5" FontSize="15" Foreground="Black"
+             Background="#FFD373" BorderBrush="#FFC440" BorderThickness="1"
+             Height="30" />
+
+             Поле Adress 
+            <TextBlock Text="Адресс:" FontSize="15" FontWeight="Bold" Foreground="#04859D"
+               Margin="5,10,5,0" />
+            <TextBox Margin="5" Padding="5" FontSize="15" Foreground="Black"
+             Background="#FFD373" BorderBrush="#FFC440" BorderThickness="1"
+             Height="30" />
+
+             Кнопка сохранения 
+            <Button Content="Сохранить"
+            Margin="5,20,5,5" Padding="10"
+            FontSize="16" FontWeight="SemiBold"
+            Background="#5FBDCE" Foreground="Black"
+            BorderBrush="#5FBDCE" BorderThickness="2"
+            HorizontalAlignment="Center" Height="40" Width="120"
+            Cursor="Hand">
+                <Button.Template>
+                    <ControlTemplate TargetType="Button">
+                        <Border CornerRadius="10" Background="{TemplateBinding Background}"
+                        BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        </Border>
+                    </ControlTemplate>
+                </Button.Template>
+            </Button>
+        </StackPanel>-->
+
+        <!-- StackPanel для добавления товара -->
+        <StackPanel x:Name="newProductBlock" Visibility="Visible" Grid.Column="0" Margin="20,234,20,10" Grid.RowSpan="3">
+            <TextBlock Text="Введите данные нового товара:" FontSize="20" FontWeight="Bold" Margin="5,10,5,0" Foreground="#04859D"/>
+
+            <!-- Поле Name -->
+            <TextBlock Text="Название:" FontSize="15" FontWeight="Bold" Foreground="#04859D" />
+            <TextBox Margin="5" Padding="5" FontSize="15" Foreground="Black"
+             Background="#FFD373" BorderBrush="#FFC440" BorderThickness="1"
+             Height="30" />
+
+            <!-- Поле ShopId -->
+            <TextBlock Text="ID магазина:" FontSize="15" FontWeight="Bold" Foreground="#04859D" />
+            <ComboBox Margin="5" Padding="5" FontSize="15" Foreground="Black" 
+              Background="#FFD373" BorderBrush="#FFC440" BorderThickness="1"
+              Height="30">
+                <ComboBoxItem Content="Магазин 1" Background="#FFD373"/>
+                <ComboBoxItem Content="Магазин 2" Background="#FFD373"/>
+                <ComboBoxItem Content="Магазин 3" Background="#FFD373"/>
+                <!-- Дополните нужными магазинами -->
+            </ComboBox>
+
+            <!-- Поле Amount -->
+            <TextBlock Text="Количество:" FontSize="15" FontWeight="Bold" Foreground="#04859D" />
+            <TextBox Margin="5" Padding="5" FontSize="15" Foreground="Black"
+                     Background="#FFD373" BorderBrush="#FFC440" BorderThickness="1" Height="30" />
+
+            <!-- Поле Price -->
+            <TextBlock Text="Цена:" FontSize="15" FontWeight="Bold" Foreground="#04859D" />
+            <TextBox Margin="5" Padding="5" FontSize="15" Foreground="Black"
+             Background="#FFD373" BorderBrush="#FFC440" BorderThickness="1"
+             Height="30" />
+
+            <!-- Кнопка сохранения -->
+            <Button Content="Сохранить"
+            Margin="5,20,5,5" Padding="10"
+            FontSize="16" FontWeight="SemiBold"
+            Background="#5FBDCE" Foreground="Black"
+            BorderBrush="#5FBDCE" BorderThickness="2"
+            HorizontalAlignment="Center" Height="40" Width="120"
+            Cursor="Hand">
+                <Button.Template>
+                    <ControlTemplate TargetType="Button">
+                        <Border CornerRadius="10" Background="{TemplateBinding Background}"
+                        BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        </Border>
+                    </ControlTemplate>
+                </Button.Template>
+            </Button>
+        </StackPanel>
+
+        <!--StackPanel для поставки товаров-->
+        <StackPanel x:Name="SupplyBlock" Visibility="Visible" Grid.Column="1" Margin="118,234,0,10" Grid.RowSpan="3" Grid.ColumnSpan="2" HorizontalAlignment="Left" Width="629">
+            <TextBlock Text="Введите данные поставки:"  TextAlignment="Center" FontSize="20" FontWeight="Bold" Margin="5,10,5,0" Foreground="#04859D" Height="30"/>
+
+            <!-- Поле для выбора типа товара -->
+            <TextBlock Text="Тип товара:" FontSize="15" FontWeight="Bold" Foreground="#04859D" Height="30"/>
+            <ComboBox Margin="5" Padding="5" FontSize="15" Foreground="Black"
+              Background="#FFD373" BorderBrush="#FFC440" BorderThickness="1"
+              Height="30">
+                <ComboBoxItem Content="Товар 1" Background="#FFD373"/>
+                <ComboBoxItem Content="Товар 2" Background="#FFD373"/>
+                <ComboBoxItem Content="Товар 3" Background="#FFD373"/>
+                <ComboBoxItem Content="Добавить новый" Background="#FFD373"/>
+            </ComboBox>
+
+            <StackPanel x:Name="newProductSupplyBlock" Visibility="Visible">
+                <!-- Если выбран "Добавить новый", появляется текстовое поле для ввода нового товара -->
+                <TextBlock Text="Введите название нового товара:" FontSize="15" FontWeight="Bold" Foreground="#04859D" Height="30"/>
+                <TextBox Margin="5" Padding="5" FontSize="15" Foreground="Black"
+                    Background="#FFD373" BorderBrush="#FFC440" BorderThickness="1" Height="30" />
+            </StackPanel>
+
+
+            <!-- Поле для выбора ID магазина -->
+            <TextBlock Text="ID магазина:" FontSize="15" FontWeight="Bold" Foreground="#04859D" Height="30"/>
+            <ComboBox Margin="5" Padding="5" FontSize="15" Foreground="Black" 
+              Background="#FFD373" BorderBrush="#FFC440" BorderThickness="1"
+              Height="30">
+                <ComboBoxItem Content="Магазин 1" Background="#FFD373"/>
+                <ComboBoxItem Content="Магазин 2" Background="#FFD373"/>
+                <ComboBoxItem Content="Магазин 3" Background="#FFD373"/>
+                <!-- Дополните нужными магазинами -->
+            </ComboBox>
+
+            <!-- Поле Amount -->
+            <TextBlock Text="Количество:" FontSize="15" FontWeight="Bold" Foreground="#04859D" Height="30"/>
+            <TextBox Margin="5" Padding="5" FontSize="15" Foreground="Black"
+             Background="#FFD373" BorderBrush="#FFC440" BorderThickness="1" Height="30" />
+
+            <!-- Поле Price -->
+            <TextBlock Text="Цена:" FontSize="15" FontWeight="Bold" Foreground="#04859D" Height="30"/>
+            <TextBox Margin="5" Padding="5" FontSize="15" Foreground="Black"
+             Background="#FFD373" BorderBrush="#FFC440" BorderThickness="1" Height="30" />
+
+            <!-- Кнопка сохранения -->
+            <Button Content="Сохранить"
+            Margin="5,20,5,5" Padding="10"
+            FontSize="16" FontWeight="SemiBold"
+            Background="#5FBDCE" Foreground="Black"
+            BorderBrush="#5FBDCE" BorderThickness="2"
+            HorizontalAlignment="Center" Height="40" Width="120"
+            Cursor="Hand">
+                <Button.Template>
+                    <ControlTemplate TargetType="Button">
+                        <Border CornerRadius="10" Background="{TemplateBinding Background}"
+                        BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        </Border>
+                    </ControlTemplate>
+                </Button.Template>
+            </Button>
+        </StackPanel>
+    </Grid>
+</Window>
