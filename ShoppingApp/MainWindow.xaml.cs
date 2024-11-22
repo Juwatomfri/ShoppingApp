@@ -25,10 +25,71 @@ namespace ShoppingApp
             ApplicationDbContext applicationContext = new ApplicationDbContext();
             ShopFactory shopFactory = new ShopFactory();
             ProductFactory productFactory = new ProductFactory();
-            shopFactory.AddToDatabase(shopFactory.CreateEntity("Дикси", "Ладожская 14"), applicationContext);
-            shopFactory.AddToDatabase(shopFactory.CreateEntity("Магнит", "Ладожская 14"), applicationContext);
-            productFactory.AddToDatabase(productFactory.CreateEntity("Ножницы \'Кусь\'", 2, 15, 215.45), applicationContext);
             applicationContext.SaveChanges();
+
+            AddProductButton.Click += AddProductButtonClick;
+            AddShopButton.Click += AddShopButtonClick;
+            SaveNewShop.Click += AddingShop;
+            SaveNewProduct.Click += AddingProduct;
+
+            void AddShopButtonClick(object sender, RoutedEventArgs e)
+            {
+                ShopResult.Text = "";
+                AddingProductBlock.Visibility = Visibility.Collapsed;
+                AddingShopBlock.Visibility = Visibility.Visible;
+            }
+            
+            void AddProductButtonClick(object sender, RoutedEventArgs e)
+            {
+                ProductResult.Text = "";
+                AddingShopBlock.Visibility = Visibility.Collapsed;
+                AddingProductBlock.Visibility = Visibility.Visible;
+                
+                ProductShopId.ItemsSource = applicationContext.Shops
+                    .Select(s => s.Id + " " + "(" + s.Name + ")")
+                    .ToList();
+            }
+
+            void AddingShop(object sender, RoutedEventArgs e)
+            {
+
+                string _shopName = AddingShopName.Text;
+                string _shopAddress = AddingShopAdress.Text;
+
+                try
+                {
+                    shopFactory.AddToDatabase(shopFactory.CreateEntity(_shopName, _shopAddress), applicationContext);
+                    ProductShopId.ItemsSource = applicationContext.Shops
+                        .Select(s => s.Id + " " + "(" + s.Name + ")")
+                        .ToList();
+                    ShopResult.Text = "Данные успешно сохранены";
+                }
+                catch
+                {
+                    throw new Exception("Ошибка добавления в БД");
+                }
+            }
+            
+            void AddingProduct(object sender, RoutedEventArgs e)
+            {
+
+                string _productName = ProductName.Text;
+                int _productShopId = int.Parse(ProductShopId.Text[0].ToString());
+                int _productAmount = int.Parse(ProductAmount.Text);
+                double _productPrice = Double.Parse(ProductPrice.Text);
+
+                try 
+                {
+                    productFactory.AddToDatabase(productFactory.CreateEntity(_productName, _productShopId, _productAmount, _productPrice), applicationContext);
+                    ProductResult.Text = "Данные успешно сохранены";
+                }
+                catch 
+                {
+                    throw new Exception("Ошибка добавления в БД");
+                }
+
+                
+            }
         }
     }
 }

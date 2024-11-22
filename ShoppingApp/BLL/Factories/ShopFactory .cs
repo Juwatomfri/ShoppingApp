@@ -9,6 +9,11 @@ namespace ShoppingApp.BLL.Factories
 {
     public class ShopFactory : EntityFactory<Shop>
     {
+        /// <summary>
+        /// Функция добавления нового магазинчика
+        /// </summary>
+        /// <param name="parameters">Name и Address</param>
+        /// <returns></returns>
         public override Shop CreateEntity(params object[] parameters)
         {
             return new Shop
