@@ -230,7 +230,7 @@
 
         <!--StackPanel для поиска минимальной цены товара-->
         
-        <StackPanel x:Name="FindCheapestBlock" Visibility="Visible" Grid.Column="1" Margin="0,127,0,147" Grid.RowSpan="3" HorizontalAlignment="Center" Width="316">
+        <StackPanel x:Name="FindCheapestBlock" Visibility="Collapsed" Grid.Column="1" Margin="0,127,0,147" Grid.RowSpan="3" HorizontalAlignment="Center" Width="316">
             <TextBlock Text="Найдите магазин с минимальной ценой товара:" TextWrapping="Wrap" TextAlignment="Center" FontSize="20" FontWeight="Bold" Margin="5,10,5,0" Foreground="#04859D" Height="99"/>
             <!--Поле для выбора типа товара--> 
             <TextBlock Text="Введите ключевое слово товара:" FontSize="15" FontWeight="Bold" Foreground="#04859D" Height="30"/>
@@ -261,7 +261,7 @@
         </StackPanel>
 
         <!--StackPanel для поиска минимальной цены набора товаров-->
-        <StackPanel x:Name="FindCheapestSetBlock" Visibility="Visible" Grid.Column="2" Margin="0,127,0,147" Grid.RowSpan="3" HorizontalAlignment="Center" Width="400">
+        <StackPanel x:Name="FindCheapestSetBlock" Visibility="Collapsed" Grid.Column="2" Margin="0,127,0,147" Grid.RowSpan="3" HorizontalAlignment="Center" Width="400">
             <TextBlock Text="Найдите магазин с минимальной ценой набора товаров:" TextWrapping="Wrap" TextAlignment="Center" FontSize="20" FontWeight="Bold" Margin="5,10,5,0" Foreground="#04859D" Height="74"/>
             <!--Список товаров--> 
             <ItemsControl x:Name="ProductsList" Margin="5" Width="380">
@@ -336,5 +336,45 @@
              Background="#E6F7F9" BorderBrush="#B3E5E5" BorderThickness="1"
              IsReadOnly="True" Height="60" TextWrapping="Wrap" Text="{Binding ResultText}" Width="374"/>
         </StackPanel>
+
+        <!--StackPanel для расчета возможных товаров-->
+        <StackPanel x:Name="PotentialPurchaseBlock" Visibility="Collapsed" Grid.Column="1" Margin="78,145,0,13" Grid.RowSpan="3" Grid.ColumnSpan="2" HorizontalAlignment="Left" Width="629">
+            <TextBlock Text="Рассчитайте доступные покупки:" TextAlignment="Center" FontSize="20" FontWeight="Bold" Margin="5,10,5,0" Foreground="#04859D" Height="30"/>
+
+            <!--Поле для ввода доступной суммы-->
+            <TextBlock Text="Доступная сумма:" FontSize="15" FontWeight="Bold" Foreground="#04859D" Height="30"/>
+            <TextBox x:Name="PotentialAvailableAmount" Margin="5" Padding="5" FontSize="15" Foreground="Black"
+                 Background="#FFD373" BorderBrush="#FFC440" BorderThickness="1" Height="30" />
+
+            <!--Поле для выбора магазина-->
+            <TextBlock Text="Выберите магазин:" FontSize="15" FontWeight="Bold" Foreground="#04859D" Height="30"/>
+            <ComboBox x:Name="PotentialShopSelector" Margin="5" Padding="5" FontSize="15" Foreground="Black"
+                  Background="#FFD373" BorderBrush="#FFC440" BorderThickness="1">
+            </ComboBox>
+
+            <!--Кнопка расчета-->
+            <Button x:Name="PotentialCalculateButton" Content="Рассчитать"
+                Margin="5,20,5,5" Padding="10"
+                FontSize="16" FontWeight="SemiBold"
+                Background="#A6D1E6" Foreground="Black"
+                BorderBrush="#A6D1E6" BorderThickness="2"
+                HorizontalAlignment="Center" Height="40" Width="120"
+                Cursor="Hand">
+                <Button.Template>
+                    <ControlTemplate TargetType="Button">
+                        <Border CornerRadius="10" Background="{TemplateBinding Background}"
+                BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        </Border>
+                    </ControlTemplate>
+                </Button.Template>
+            </Button>
+            <!--Поле для отображения доступных товаров-->
+            <TextBlock Text="Доступные товары:" FontSize="15" FontWeight="Bold" Foreground="#04859D" Height="30"/>
+            <TextBox x:Name="PotentialAvailableProductsList" Margin="5" Padding="5" FontSize="15" Foreground="Black"
+                 Background="#E6F7F9" BorderBrush="#B3E5E5" BorderThickness="1"
+                 IsReadOnly="True" Height="256" TextWrapping="Wrap" Text="{Binding ResultText}" Width="616"/>
+        </StackPanel>
+
     </Grid>
 </Window>

@@ -34,7 +34,14 @@ namespace ShoppingApp
             SaveNewProduct.Click += AddingProduct;
             SupplyButton.Click += SupplyAction;
             CheaperButton.Click += CheaperAction;
-            CheaperProductButton.Click += CheaperProductAction;
+            BuyButton.Click += PotentialProductsAction;
+
+            List<string> Findshops()
+            {
+                return applicationContext.Shops
+                        .Select(s => s.Id + " " + "(" + s.Name + ")")
+                        .ToList();
+            }
 
             void AddShopButtonClick(object sender, RoutedEventArgs e)
             {
@@ -63,9 +70,7 @@ namespace ShoppingApp
                 try
                 {
                     shopFactory.AddToDatabase(shopFactory.CreateEntity(_shopName, _shopAddress), applicationContext);
-                    ProductShopId.ItemsSource = applicationContext.Shops
-                        .Select(s => s.Id + " " + "(" + s.Name + ")")
-                        .ToList();
+                    ProductShopId.ItemsSource = Findshops();
                     ShopResult.Text = "Данные успешно сохранены";
                 }
                 catch
@@ -99,18 +104,17 @@ namespace ShoppingApp
                 SupplyBlock.Visibility = Visibility.Visible;
                 FindCheapestSetBlock.Visibility = Visibility.Collapsed;
                 FindCheapestBlock.Visibility = Visibility.Collapsed;
-                SupplyShopId.ItemsSource = applicationContext.Shops
-                        .Select(s => s.Id + " " + "(" + s.Name + ")")
-                        .ToList();
+                PotentialPurchaseBlock.Visibility = Visibility.Collapsed;
+
+                SupplyShopId.ItemsSource = Findshops();
                 SupplyShopId.DropDownClosed += SetProducts;
 
                 void SetProducts(object sender, EventArgs e)
                 {
                     var filteredProducts = applicationContext.Products
                         .Where(p => p.ShopId == int.Parse(SupplyShopId.Text[0].ToString()))
-                        .Select(p => p.Id + " " + "(" + p.Name + " " + p.Price +")")
+                        .Select(p => p.Id + " " + "(" + p.Name + " " + p.Price + ")")
                         .ToList();
-
                     SupplyProduct.ItemsSource = filteredProducts;
                 }
 
@@ -140,16 +144,49 @@ namespace ShoppingApp
                 SupplyBlock.Visibility = Visibility.Collapsed;
                 FindCheapestSetBlock.Visibility = Visibility.Visible;
                 FindCheapestBlock.Visibility = Visibility.Visible;
+                PotentialPurchaseBlock.Visibility = Visibility.Collapsed;
+
+                CheaperProductButton.Click += CheaperProductAction;
+
+                void CheaperProductAction(object sender, RoutedEventArgs e)
+                {
+                    CheaperProductResult.Text = "";
+                    string _prodName = CheaperProduct.Text;
+                    CheaperProductFinder cheaperProductFinder = new CheaperProductFinder();
+                    CheaperProductResult.Text = cheaperProductFinder.FindTheCheapestShop(_prodName);
+                }
             }
 
-            void CheaperProductAction(object sender, RoutedEventArgs e)
+            void PotentialProductsAction(object sender, RoutedEventArgs e)
             {
-                CheaperProductResult.Text = "";
-                string _prodName = CheaperProduct.Text;
-                CheaperProductFinder cheaperProductFinder = new CheaperProductFinder();
-                CheaperProductResult.Text = cheaperProductFinder.FindTheCheapestShop(_prodName);
+                PotentialAvailableProductsList.Text = "";
+                PotentialAvailableAmount.Text = "";
+                PotentialPurchaseBlock.Visibility = Visibility.Visible;
+                SupplyBlock.Visibility = Visibility.Collapsed;
+                FindCheapestSetBlock.Visibility = Visibility.Collapsed;
+                FindCheapestBlock.Visibility = Visibility.Collapsed;
+                PotentialCalculateButton.Click += PotentialCalculateButton_Click;
+
+                PotentialShopSelector.ItemsSource = Findshops();
+
+                void PotentialCalculateButton_Click(object sender, RoutedEventArgs e)
+                {
+                    PotentialAvailableProductsList.Text = "";
+                    double _anount = double.Parse(PotentialAvailableAmount.Text);
+                    int shopId = int.Parse(PotentialShopSelector.Text[0].ToString());
+
+                    PossibleProductsFinder possibleProductsFinder = new PossibleProductsFinder();
+                    foreach (string item in possibleProductsFinder.Find(shopId, _anount))
+                    {
+                        PotentialAvailableProductsList.Text += item + "\n";
+                    }
+                }
 
             }
+
+
+
+
 
         }
     }
