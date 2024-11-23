@@ -144,7 +144,6 @@ namespace ShoppingApp
             void CheaperAction(object sender, RoutedEventArgs e)
             {
                 SupplyBlock.Visibility = Visibility.Collapsed;
-                FindCheapestSetBlock.Visibility = Visibility.Visible;
                 FindCheapestBlock.Visibility = Visibility.Visible;
                 PotentialPurchaseBlock.Visibility = Visibility.Collapsed;
                 PurchaseBlock.Visibility = Visibility.Collapsed;

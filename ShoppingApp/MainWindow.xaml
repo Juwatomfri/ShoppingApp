@@ -244,7 +244,7 @@
 
         <!--StackPanel для поиска минимальной цены товара-->
 
-        <StackPanel x:Name="FindCheapestBlock" Visibility="Collapsed" Grid.Column="1" Margin="0,127,0,147" Grid.RowSpan="3" HorizontalAlignment="Center" Width="316">
+        <StackPanel x:Name="FindCheapestBlock" Visibility="Collapsed" Grid.Column="1" Margin="201,137,0,137" Grid.RowSpan="3" HorizontalAlignment="Left" Width="382" Grid.ColumnSpan="2">
             <TextBlock Text="Найдите магазин с минимальной ценой товара:" TextWrapping="Wrap" TextAlignment="Center" FontSize="20" FontWeight="Bold" Margin="5,10,5,0" Foreground="#04859D" Height="99"/>
             <!--Поле для выбора типа товара-->
             <TextBlock Text="Введите ключевое слово товара:" FontSize="15" FontWeight="Bold" Foreground="#04859D" Height="30"/>
