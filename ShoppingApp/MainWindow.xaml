@@ -135,9 +135,9 @@
 
         <!--StackPanel c кнопками управления прилложением-->
         <TextBlock  Grid.Column="1" Grid.ColumnSpan="2" Text="Выберите нужный раздел"  TextAlignment="Center" FontSize="20" FontWeight="Bold" Margin="3,0,7,191" Foreground="#04859D"/>
-        <StackPanel Grid.Column="1" Grid.ColumnSpan="2"  Orientation="Horizontal" VerticalAlignment="Top" Height="100" Margin="78,40,62,0" Cursor="Hand">
+        <StackPanel Grid.Column="1" Grid.ColumnSpan="2"  Orientation="Horizontal" VerticalAlignment="Top" Height="100" Margin="71,43,75,0" Cursor="Hand">
             <!-- Первая кнопка -->
-            <Button x:Name="SupplyButton" Content="Завезти товар" Width="200" Height="55" Margin="5"
+            <Button x:Name="SupplyButton" Content="Завезти товар" Width="150" Height="56" Margin="5"
             Background="#A6D1E6" Foreground="Black" FontSize="16" FontWeight="Bold"
             BorderBrush="#90C3D4" BorderThickness="2">
                 <Button.Template>
@@ -151,7 +151,7 @@
             </Button>
 
             <!-- Вторая кнопка -->
-            <Button x:Name="CheaperButton" Content="Найти подешевле" Width="200" Height="55" Margin="5"
+            <Button x:Name="CheaperButton" Content="Найти подешевле" Width="150" Height="55" Margin="5"
             Background="#A6D1E6" Foreground="Black" FontSize="16" FontWeight="Bold"
             BorderBrush="#90C3D4" BorderThickness="2" Cursor="Hand">
                 <Button.Template>
@@ -165,7 +165,21 @@
             </Button>
 
             <!-- Третья кнопка -->
-            <Button x:Name="BuyButton" Content="Купить товар" Width="200" Height="55" Margin="5"
+            <Button x:Name="PossibleButton" Content="Что купить" Width="150" Height="55" Margin="5"
+            Background="#A6D1E6" Foreground="Black" FontSize="16" FontWeight="Bold"
+            BorderBrush="#90C3D4" BorderThickness="2" Cursor="Hand">
+                <Button.Template>
+                    <ControlTemplate TargetType="Button">
+                        <Border CornerRadius="10" Background="{TemplateBinding Background}" 
+                        BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        </Border>
+                    </ControlTemplate>
+                </Button.Template>
+            </Button>
+
+            <!-- Четвёртая кнопка -->
+            <Button x:Name="BuyButton" Content="Купить товар" Width="150" Height="55" Margin="5"
             Background="#A6D1E6" Foreground="Black" FontSize="16" FontWeight="Bold"
             BorderBrush="#90C3D4" BorderThickness="2" Cursor="Hand">
                 <Button.Template>
@@ -229,10 +243,10 @@
         </StackPanel>
 
         <!--StackPanel для поиска минимальной цены товара-->
-        
+
         <StackPanel x:Name="FindCheapestBlock" Visibility="Collapsed" Grid.Column="1" Margin="0,127,0,147" Grid.RowSpan="3" HorizontalAlignment="Center" Width="316">
             <TextBlock Text="Найдите магазин с минимальной ценой товара:" TextWrapping="Wrap" TextAlignment="Center" FontSize="20" FontWeight="Bold" Margin="5,10,5,0" Foreground="#04859D" Height="99"/>
-            <!--Поле для выбора типа товара--> 
+            <!--Поле для выбора типа товара-->
             <TextBlock Text="Введите ключевое слово товара:" FontSize="15" FontWeight="Bold" Foreground="#04859D" Height="30"/>
             <TextBox x:Name="CheaperProduct" Margin="5" Padding="5" FontSize="15" Foreground="Black"
                 Background="#A6D1E6" BorderBrush="#A6D1E6" BorderThickness="1" Height="30" />
@@ -253,7 +267,7 @@
                     </ControlTemplate>
                 </Button.Template>
             </Button>
-            <!--Поле для отображения результата--> 
+            <!--Поле для отображения результата-->
             <TextBlock Text="Результат:" FontSize="15" FontWeight="Bold" Foreground="#04859D" Margin="5,20,5,0" Height="30"/>
             <TextBox x:Name="CheaperProductResult" TextWrapping="Wrap" Margin="5" Padding="5" FontSize="15" Foreground="Black"
              Background="#E6F7F9" BorderBrush="#B3E5E5" BorderThickness="1"
@@ -263,7 +277,7 @@
         <!--StackPanel для поиска минимальной цены набора товаров-->
         <StackPanel x:Name="FindCheapestSetBlock" Visibility="Collapsed" Grid.Column="2" Margin="0,127,0,147" Grid.RowSpan="3" HorizontalAlignment="Center" Width="400">
             <TextBlock Text="Найдите магазин с минимальной ценой набора товаров:" TextWrapping="Wrap" TextAlignment="Center" FontSize="20" FontWeight="Bold" Margin="5,10,5,0" Foreground="#04859D" Height="74"/>
-            <!--Список товаров--> 
+            <!--Список товаров-->
             <ItemsControl x:Name="ProductsList" Margin="5" Width="380">
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
@@ -276,7 +290,7 @@
                             <TextBox Margin="5" Padding="5" FontSize="15" Width="100" Foreground="Black"
                              Background="#FFD373" BorderBrush="#FFC440" BorderThickness="1" Height="30"
                              Text="{Binding Quantity, Mode=TwoWay}" />
-                            <!--Кнопка удаления--> 
+                            <!--Кнопка удаления-->
                             <Button Content="×" FontSize="15" FontWeight="Bold" Width="30" Height="30"
                             Background="#FFAAAA" Foreground="Black" BorderBrush="#FFAAAA"
                             Command="{Binding DataContext.RemoveProductCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
@@ -295,7 +309,7 @@
                 </ItemsControl.ItemTemplate>
             </ItemsControl>
 
-         <!--Кнопка добавления нового товара--> 
+            <!--Кнопка добавления нового товара-->
             <Button Content="Добавить товар"
             Margin="5,10,5,5" Padding="10"
             FontSize="16" FontWeight="SemiBold"
@@ -313,7 +327,7 @@
                 </Button.Template>
             </Button>
 
-         <!--Кнопка для поиска минимальной цены-->
+            <!--Кнопка для поиска минимальной цены-->
             <Button Content="Найти магазин"
             Margin="5,20,5,5" Padding="10"
             FontSize="16" FontWeight="SemiBold"
@@ -330,7 +344,7 @@
                     </ControlTemplate>
                 </Button.Template>
             </Button>
-            <!--Поле для отображения результата--> 
+            <!--Поле для отображения результата-->
             <TextBlock Text="Результат:" FontSize="15" FontWeight="Bold" Foreground="#04859D" Margin="5,20,5,0" Height="30"/>
             <TextBox Margin="5" Padding="5" FontSize="15" Foreground="Black"
              Background="#E6F7F9" BorderBrush="#B3E5E5" BorderThickness="1"
@@ -376,5 +390,68 @@
                  IsReadOnly="True" Height="256" TextWrapping="Wrap" Text="{Binding ResultText}" Width="616"/>
         </StackPanel>
 
+        <!--StackPanel для покупки товаров-->
+        <StackPanel x:Name="PurchaseBlock" Visibility="Collapsed" Grid.Column="1" Margin="78,145,0,13" Grid.RowSpan="3" Grid.ColumnSpan="2" HorizontalAlignment="Left" Width="629">
+            <TextBlock Text="Оформление покупки:" TextAlignment="Center" FontSize="20" FontWeight="Bold" Margin="5,10,5,0" Foreground="#04859D" Height="30"/>
+
+            <!--Поле для выбора магазина-->
+            <TextBlock Text="Выберите магазин:" FontSize="15" FontWeight="Bold" Foreground="#04859D" Height="30"/>
+            <ComboBox x:Name="PurchaseShopSelector" Margin="5" Padding="5" FontSize="15" Foreground="Black"
+          Background="#FFD373" BorderBrush="#FFC440" BorderThickness="1" Width="250">
+            </ComboBox>
+
+            <!--Поле для выбора товара-->
+            <TextBlock Text="Выберите товар:" FontSize="15" FontWeight="Bold" Foreground="#04859D" Height="30"/>
+            <ComboBox x:Name="PurchaseProductSelector" Margin="5" Padding="5" FontSize="15" Foreground="Black"
+          Background="#FFD373" BorderBrush="#FFC440" BorderThickness="1" Width="250">
+            </ComboBox>
+
+            <!--Поле для указания количества-->
+            <TextBlock Text="Введите количество:" FontSize="15" FontWeight="Bold" Foreground="#04859D" Height="30"/>
+            <TextBox x:Name="PurchaseQuantity" Margin="5" Padding="5" FontSize="15" Foreground="Black"
+         Background="#FFD373" BorderBrush="#FFC440" BorderThickness="1" Width="134" Height="30"/>
+
+            <!--Кнопка расчёта-->
+            <Button x:Name="PurchasePriceButton" Content="Расчитать"
+        Margin="5,20,5,5" Padding="10"
+        FontSize="16" FontWeight="SemiBold"
+        Background="#A6D1E6" Foreground="Black"
+        BorderBrush="#A6D1E6" BorderThickness="2"
+        HorizontalAlignment="Center" Height="40" Width="120"
+        Cursor="Hand">
+                <Button.Template>
+                    <ControlTemplate TargetType="Button">
+                        <Border CornerRadius="10" Background="{TemplateBinding Background}"
+        BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        </Border>
+                    </ControlTemplate>
+                </Button.Template>
+            </Button>
+
+            <!--Кнопка покупки-->
+            <Button x:Name="PurchaseButton" Content="Купить"
+        Padding="10"
+        FontSize="16" FontWeight="SemiBold"
+        Background="#A6D1E6" Foreground="Black"
+        BorderBrush="#A6D1E6" BorderThickness="2"
+        Height="40" Width="120"
+        Cursor="Hand">
+                <Button.Template>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Border CornerRadius="10" Background="{TemplateBinding Background}"
+        BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        </Border>
+                    </ControlTemplate>
+                </Button.Template>
+            </Button>
+
+            <!--Поле для отображения результата-->
+            <TextBlock Text="Результат:" FontSize="15" FontWeight="Bold" Foreground="#04859D" Height="30"/>
+            <TextBox x:Name="PurchaseResult" Margin="5" Padding="5" FontSize="15" Foreground="Black"
+         Background="#E6F7F9" BorderBrush="#B3E5E5" BorderThickness="1"
+         IsReadOnly="True" Height="118" TextWrapping="Wrap" Width="616"/>
+        </StackPanel>
     </Grid>
 </Window>

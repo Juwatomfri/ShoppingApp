@@ -34,7 +34,8 @@ namespace ShoppingApp
             SaveNewProduct.Click += AddingProduct;
             SupplyButton.Click += SupplyAction;
             CheaperButton.Click += CheaperAction;
-            BuyButton.Click += PotentialProductsAction;
+            PossibleButton.Click += PotentialProductsAction;
+            BuyButton.Click += BuyProducts;
 
             List<string> Findshops()
             {
@@ -105,6 +106,7 @@ namespace ShoppingApp
                 FindCheapestSetBlock.Visibility = Visibility.Collapsed;
                 FindCheapestBlock.Visibility = Visibility.Collapsed;
                 PotentialPurchaseBlock.Visibility = Visibility.Collapsed;
+                PurchaseBlock.Visibility = Visibility.Collapsed;
 
                 SupplyShopId.ItemsSource = Findshops();
                 SupplyShopId.DropDownClosed += SetProducts;
@@ -145,6 +147,7 @@ namespace ShoppingApp
                 FindCheapestSetBlock.Visibility = Visibility.Visible;
                 FindCheapestBlock.Visibility = Visibility.Visible;
                 PotentialPurchaseBlock.Visibility = Visibility.Collapsed;
+                PurchaseBlock.Visibility = Visibility.Collapsed;
 
                 CheaperProductButton.Click += CheaperProductAction;
 
@@ -165,6 +168,7 @@ namespace ShoppingApp
                 SupplyBlock.Visibility = Visibility.Collapsed;
                 FindCheapestSetBlock.Visibility = Visibility.Collapsed;
                 FindCheapestBlock.Visibility = Visibility.Collapsed;
+                PurchaseBlock.Visibility = Visibility.Collapsed;
                 PotentialCalculateButton.Click += PotentialCalculateButton_Click;
 
                 PotentialShopSelector.ItemsSource = Findshops();
@@ -183,11 +187,50 @@ namespace ShoppingApp
                 }
 
             }
+            
+            void BuyProducts(object sender, RoutedEventArgs e)
+            {
+                PurchaseQuantity.Text = "";
+                PurchaseResult.Text = "";
+                PotentialAvailableProductsList.Text = "";
+                PotentialAvailableAmount.Text = "";
+                PurchaseBlock.Visibility = Visibility.Visible;
+                PotentialPurchaseBlock.Visibility = Visibility.Collapsed;
+                SupplyBlock.Visibility = Visibility.Collapsed;
+                FindCheapestSetBlock.Visibility = Visibility.Collapsed;
+                FindCheapestBlock.Visibility = Visibility.Collapsed;
+                PurchasePriceButton.Click += PurchasePriceButton_click;
+                PurchaseButton.Click += PurchaseButton_click;
 
+                PurchaseShopSelector.ItemsSource = Findshops();
+                PurchaseShopSelector.DropDownClosed += SetPurchaseProducts;
 
+                void SetPurchaseProducts (object sender, EventArgs e)
+                {
+                    PurchaseProductSelector.ItemsSource = applicationContext.Products
+                            .Where(p => p.ShopId == int.Parse(PurchaseShopSelector.Text[0].ToString()))
+                            .Select(p => p.Id + " " + "(" + p.Name + " " + p.Price + ")")
+                            .ToList();
+                }
 
+                void PurchaseButton_click(object sender, RoutedEventArgs e)
+                {
+                    PurchaseResult.Text = "";
+                    int _prodId = int.Parse(PurchaseProductSelector.Text[0].ToString());
+                    int _amount = int.Parse(PurchaseQuantity.Text);
+                    ProductsPurchaser productsPurchaser = new ProductsPurchaser();
+                    PurchaseResult.Text += productsPurchaser.BuyProducts(_prodId, _amount) + "\n";
+                }
 
-
+                void PurchasePriceButton_click (object sender, RoutedEventArgs e)
+                {
+                    PurchaseResult.Text = "";
+                    int _prodId = int.Parse(PurchaseProductSelector.Text[0].ToString());
+                    int _amount = int.Parse(PurchaseQuantity.Text);
+                    ProductsPurchaser productsPurchaser = new ProductsPurchaser();
+                    PurchaseResult.Text += productsPurchaser.GetTheFinalPrice(_prodId, _amount) + "\n";
+                }
+            }
         }
     }
 }
