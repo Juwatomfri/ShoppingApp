@@ -12,7 +12,7 @@ namespace ShoppingApp.BLL
         ApplicationDbContext applicationContext = new ApplicationDbContext();
         public void SupplyProduct(int productId, int amount, double price)
         {
-            Product product = applicationContext.Products.FirstOrDefault(p => p.Id == productId);
+            Product product = applicationContext.Products.First(p => p.Id == productId);
             if (product != null)
             {
                 product.Amount += amount;
