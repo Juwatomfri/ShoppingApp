@@ -1,4 +1,5 @@
-﻿using ShoppingApp.BLL.Factories;
+﻿using ShoppingApp.BLL;
+using ShoppingApp.BLL.Factories;
 using ShoppingApp.Models;
 using System.Linq;
 using System.Text;
@@ -31,6 +32,7 @@ namespace ShoppingApp
             AddShopButton.Click += AddShopButtonClick;
             SaveNewShop.Click += AddingShop;
             SaveNewProduct.Click += AddingProduct;
+            SupplyButton.Click += SupplyAction;
 
             void AddShopButtonClick(object sender, RoutedEventArgs e)
             {
@@ -87,8 +89,48 @@ namespace ShoppingApp
                 {
                     throw new Exception("Ошибка добавления в БД");
                 }
+            }
 
-                
+            void SupplyAction (object sender, RoutedEventArgs e)
+            {
+                SupplyResult.Text = "";
+                SupplyBlock.Visibility = Visibility.Visible;
+                FindCheapestSetBlock.Visibility = Visibility.Collapsed;
+                FindCheapestBlock.Visibility = Visibility.Collapsed;
+                SupplyShopId.ItemsSource = applicationContext.Shops
+                        .Select(s => s.Id + " " + "(" + s.Name + ")")
+                        .ToList();
+                SupplyShopId.DropDownClosed += SetProducts;
+
+                void SetProducts(object sender, EventArgs e)
+                {
+                    var filteredProducts = applicationContext.Products
+                        .Where(p => p.ShopId == int.Parse(SupplyShopId.Text[0].ToString()))
+                        .Select(p => p.Id + " " + "(" + p.Name + " " + p.Price +")")
+                        .ToList();
+
+                    SupplyProduct.ItemsSource = filteredProducts;
+                }
+
+                SupplySave.Click += SupplySave_Click;
+
+                void SupplySave_Click(object sender, RoutedEventArgs e)
+                {
+                    int _amount = int.Parse(SupplyAmount.Text);
+                    double _price = (SupplyPrice.Text != "") ? double.Parse(SupplyPrice.Text) : 0.0;
+                    int _productId = int.Parse(SupplyProduct.Text[0].ToString());
+
+                    Supplier supplier = new Supplier();
+                    try
+                    {
+                        supplier.SupplyProduct(_productId, _amount, _price);
+                        SupplyResult.Text = "Товар успешно добавлен в магазин";
+                    }
+                    catch (Exception ex)
+                    {
+                        throw new Exception("Ошибка обновления базы данных");
+                    }
+                }
             }
         }
     }
