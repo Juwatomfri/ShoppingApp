@@ -230,16 +230,14 @@
 
         <!--StackPanel для поиска минимальной цены товара-->
         
-        <StackPanel x:Name="FindCheapestBlock" Visibility="Collapsed" Grid.Column="1" Margin="0,127,0,147" Grid.RowSpan="3" HorizontalAlignment="Center" Width="316">
+        <StackPanel x:Name="FindCheapestBlock" Visibility="Visible" Grid.Column="1" Margin="0,127,0,147" Grid.RowSpan="3" HorizontalAlignment="Center" Width="316">
             <TextBlock Text="Найдите магазин с минимальной ценой товара:" TextWrapping="Wrap" TextAlignment="Center" FontSize="20" FontWeight="Bold" Margin="5,10,5,0" Foreground="#04859D" Height="99"/>
             <!--Поле для выбора типа товара--> 
-            <TextBlock Text="Выберите тип товара:" FontSize="15" FontWeight="Bold" Foreground="#04859D" Height="30"/>
-            <ComboBox Margin="5" Padding="5" FontSize="15" Foreground="Black"
-                Background="#FFD373" BorderBrush="#FFC440" BorderThickness="1"
-                Height="30">
-            </ComboBox>
+            <TextBlock Text="Введите ключевое слово товара:" FontSize="15" FontWeight="Bold" Foreground="#04859D" Height="30"/>
+            <TextBox x:Name="CheaperProduct" Margin="5" Padding="5" FontSize="15" Foreground="Black"
+                Background="#A6D1E6" BorderBrush="#A6D1E6" BorderThickness="1" Height="30" />
             <!--Кнопка для поиска минимальной цены-->
-            <Button Content="Найти магазин"
+            <Button x:Name="CheaperProductButton" Content="Найти магазин"
                 Margin="5,20,5,5" Padding="10"
                 FontSize="16" FontWeight="SemiBold"
                 Background="#A6D1E6" Foreground="Black"
@@ -257,13 +255,13 @@
             </Button>
             <!--Поле для отображения результата--> 
             <TextBlock Text="Результат:" FontSize="15" FontWeight="Bold" Foreground="#04859D" Margin="5,20,5,0" Height="30"/>
-            <TextBox Margin="5" Padding="5" FontSize="15" Foreground="Black"
+            <TextBox x:Name="CheaperProductResult" TextWrapping="Wrap" Margin="5" Padding="5" FontSize="15" Foreground="Black"
              Background="#E6F7F9" BorderBrush="#B3E5E5" BorderThickness="1"
-             IsReadOnly="True" Height="30" />
+             IsReadOnly="True" Height="71" />
         </StackPanel>
 
         <!--StackPanel для поиска минимальной цены набора товаров-->
-        <StackPanel x:Name="FindCheapestSetBlock" Visibility="Collapsed" Grid.Column="2" Margin="0,127,0,147" Grid.RowSpan="3" HorizontalAlignment="Center" Width="400">
+        <StackPanel x:Name="FindCheapestSetBlock" Visibility="Visible" Grid.Column="2" Margin="0,127,0,147" Grid.RowSpan="3" HorizontalAlignment="Center" Width="400">
             <TextBlock Text="Найдите магазин с минимальной ценой набора товаров:" TextWrapping="Wrap" TextAlignment="Center" FontSize="20" FontWeight="Bold" Margin="5,10,5,0" Foreground="#04859D" Height="74"/>
             <!--Список товаров--> 
             <ItemsControl x:Name="ProductsList" Margin="5" Width="380">
@@ -336,7 +334,7 @@
             <TextBlock Text="Результат:" FontSize="15" FontWeight="Bold" Foreground="#04859D" Margin="5,20,5,0" Height="30"/>
             <TextBox Margin="5" Padding="5" FontSize="15" Foreground="Black"
              Background="#E6F7F9" BorderBrush="#B3E5E5" BorderThickness="1"
-             IsReadOnly="True" Height="60" TextWrapping="Wrap" Text="{Binding ResultText}"/>
+             IsReadOnly="True" Height="60" TextWrapping="Wrap" Text="{Binding ResultText}" Width="374"/>
         </StackPanel>
     </Grid>
 </Window>

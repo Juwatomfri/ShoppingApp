@@ -33,6 +33,8 @@ namespace ShoppingApp
             SaveNewShop.Click += AddingShop;
             SaveNewProduct.Click += AddingProduct;
             SupplyButton.Click += SupplyAction;
+            CheaperButton.Click += CheaperAction;
+            CheaperProductButton.Click += CheaperProductAction;
 
             void AddShopButtonClick(object sender, RoutedEventArgs e)
             {
@@ -132,6 +134,23 @@ namespace ShoppingApp
                     }
                 }
             }
+
+            void CheaperAction(object sender, RoutedEventArgs e)
+            {
+                SupplyBlock.Visibility = Visibility.Collapsed;
+                FindCheapestSetBlock.Visibility = Visibility.Visible;
+                FindCheapestBlock.Visibility = Visibility.Visible;
+            }
+
+            void CheaperProductAction(object sender, RoutedEventArgs e)
+            {
+                CheaperProductResult.Text = "";
+                string _prodName = CheaperProduct.Text;
+                CheaperProductFinder cheaperProductFinder = new CheaperProductFinder();
+                CheaperProductResult.Text = cheaperProductFinder.FindTheCheapestShop(_prodName);
+
+            }
+
         }
     }
 }
