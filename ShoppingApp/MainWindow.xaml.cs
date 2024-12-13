@@ -1,6 +1,7 @@
 ﻿using ShoppingApp.BLL;
 using ShoppingApp.BLL.Factories;
-using ShoppingApp.Models;
+using DAL;
+using DAL.Models;
 using System.Linq;
 using System.Text;
 using System.Windows;

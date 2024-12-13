@@ -1,5 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore;
-using ShoppingApp.Models;
+﻿namespace DAL;
+using Microsoft.EntityFrameworkCore;
+using DAL.Models;
+
 
 public class ApplicationDbContext : DbContext
 {

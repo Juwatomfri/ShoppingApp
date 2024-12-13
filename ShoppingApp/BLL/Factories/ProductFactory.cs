@@ -1,4 +1,5 @@
-﻿using ShoppingApp.Models;
+﻿using DAL;
+using DAL.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
