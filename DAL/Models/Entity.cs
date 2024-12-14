@@ -7,10 +7,9 @@ using System.Threading.Tasks;
 
 namespace DAL.Models
 {
-    public class Product : Entity
+    public class Entity
     {
-        public int ShopId { get; set; }
-        public int Amount { get; set; }
-        public double Price { get; set; }
+        [Key] public int Id { get; set; }
+        public string Name { get; set; }
     }
 }

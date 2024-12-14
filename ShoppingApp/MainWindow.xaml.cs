@@ -1,7 +1,7 @@
-﻿using ShoppingApp.BLL;
-using ShoppingApp.BLL.Factories;
+﻿using BLL;
 using DAL;
-using DAL.Models;
+using System.Configuration;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Windows;
@@ -24,10 +24,14 @@ namespace ShoppingApp
         public MainWindow()
         {
             InitializeComponent();
-            ApplicationDbContext applicationContext = new ApplicationDbContext();
-            ShopFactory shopFactory = new ShopFactory();
-            ProductFactory productFactory = new ProductFactory();
-            applicationContext.SaveChanges();
+
+            ApplicationDbContext applicationContext = default;
+
+            if (App.DataService.GetType().IsGenericType && App.DataService.GetType().GetGenericTypeDefinition() == typeof(DatabaseDataService<>))
+            {
+                applicationContext = new ApplicationDbContext();
+                applicationContext.SaveChanges();
+            }
 
             AddProductButton.Click += AddProductButtonClick;
             AddShopButton.Click += AddShopButtonClick;
@@ -40,9 +44,63 @@ namespace ShoppingApp
 
             List<string> Findshops()
             {
-                return applicationContext.Shops
-                        .Select(s => s.Id + " " + "(" + s.Name + ")")
+                if (applicationContext != null)
+                {
+                    return applicationContext.Shops
+                        .Select(s => s.Id + " " + "(" + s.Name + ", " + s.Address + ")")
                         .ToList();
+                }
+                else
+                {
+                    var shops = new List<string>();
+
+                    // Замените на путь к вашему CSV-файлу
+                    string filePath = ConfigurationManager.AppSettings["CsvFilePathToShop"];
+
+                    try
+                    {
+                        using (var reader = new StreamReader(filePath))
+                        {
+                            string line;
+                            // Пропускаем заголовок, если он есть, или начинаем сразу с первой строки
+                            bool isFirstLine = true;
+
+                            while ((line = reader.ReadLine()) != null)
+                            {
+                                if (isFirstLine)
+                                {
+                                    // Пропускаем первую строку с заголовками, если нужно
+                                    isFirstLine = false;
+                                    continue;
+                                }
+
+                                // Разделяем строку по запятой
+                                string[] values = line.Split(',');
+
+                                if (values.Length >= 3) // Если строка корректная (по количеству колонок)
+                                {
+                                    int id;
+                                    string name = values[1].Trim();
+                                    string address = values[2].Trim();
+
+                                    // Проверка на корректность данных, например, проверка на ID
+                                    if (int.TryParse(values[0].Trim(), out id))
+                                    {
+                                        // Формируем строку с данными о магазине
+                                        shops.Add($"{id} ({name}, {address})");
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        // Обработка ошибок чтения файла CSV
+                        MessageBox.Show($"Ошибка при чтении CSV файла: {ex.Message}");
+                    }
+
+                    return shops;
+                }
             }
 
             void AddShopButtonClick(object sender, RoutedEventArgs e)
@@ -57,10 +115,8 @@ namespace ShoppingApp
                 ProductResult.Text = "";
                 AddingShopBlock.Visibility = Visibility.Collapsed;
                 AddingProductBlock.Visibility = Visibility.Visible;
-                
-                ProductShopId.ItemsSource = applicationContext.Shops
-                    .Select(s => s.Id + " " + "(" + s.Name + ")")
-                    .ToList();
+
+                ProductShopId.ItemsSource = Findshops();
             }
 
             void AddingShop(object sender, RoutedEventArgs e)
@@ -71,7 +127,7 @@ namespace ShoppingApp
 
                 try
                 {
-                    shopFactory.AddToDatabase(shopFactory.CreateEntity(_shopName, _shopAddress), applicationContext);
+                    App.DataService.AddToDatabase(App.DataService.CreateEntity("shop", _shopName, _shopAddress), applicationContext);
                     ProductShopId.ItemsSource = Findshops();
                     ShopResult.Text = "Данные успешно сохранены";
                 }
@@ -79,8 +135,9 @@ namespace ShoppingApp
                 {
                     throw new Exception("Ошибка добавления в БД");
                 }
+                applicationContext.SaveChanges();
             }
-            
+
             void AddingProduct(object sender, RoutedEventArgs e)
             {
 
@@ -91,13 +148,15 @@ namespace ShoppingApp
 
                 try 
                 {
-                    productFactory.AddToDatabase(productFactory.CreateEntity(_productName, _productShopId, _productAmount, _productPrice), applicationContext);
+                    App.DataService.AddToDatabase(App.DataService.CreateEntity("product", _productName, _productShopId, _productAmount, _productPrice), applicationContext);
                     ProductResult.Text = "Данные успешно сохранены";
                 }
                 catch 
                 {
                     throw new Exception("Ошибка добавления в БД");
                 }
+
+                applicationContext.SaveChanges();
             }
 
             void SupplyAction (object sender, RoutedEventArgs e)
@@ -114,6 +173,7 @@ namespace ShoppingApp
 
                 void SetProducts(object sender, EventArgs e)
                 {
+
                     var filteredProducts = applicationContext.Products
                         .Where(p => p.ShopId == int.Parse(SupplyShopId.Text[0].ToString()))
                         .Select(p => p.Id + " " + "(" + p.Name + " " + p.Price + ")")
@@ -125,14 +185,15 @@ namespace ShoppingApp
 
                 void SupplySave_Click(object sender, RoutedEventArgs e)
                 {
+                    string text = SupplyProduct.Text;
+                    int spaceIndex = text.IndexOf(' ');
+                    int _productId = int.Parse(text.Substring(0, spaceIndex));
                     int _amount = int.Parse(SupplyAmount.Text);
                     double _price = (SupplyPrice.Text != "") ? double.Parse(SupplyPrice.Text) : 0.0;
-                    int _productId = int.Parse(SupplyProduct.Text[0].ToString());
-
-                    Supplier supplier = new Supplier();
+                    //int _productId = int.Parse(SupplyProduct.Text[0].ToString());
                     try
                     {
-                        supplier.SupplyProduct(_productId, _amount, _price);
+                        App.DataService.SupplyProduct(_productId, _amount, _price);
                         SupplyResult.Text = "Товар успешно добавлен в магазин";
                     }
                     catch (Exception ex)
@@ -155,8 +216,7 @@ namespace ShoppingApp
                 {
                     CheaperProductResult.Text = "";
                     string _prodName = CheaperProduct.Text;
-                    CheaperProductFinder cheaperProductFinder = new CheaperProductFinder();
-                    CheaperProductResult.Text = cheaperProductFinder.FindTheCheapestShop(_prodName);
+                    CheaperProductResult.Text = App.DataService.FindTheCheapestShop(_prodName);
                 }
             }
 
@@ -175,12 +235,14 @@ namespace ShoppingApp
 
                 void PotentialCalculateButton_Click(object sender, RoutedEventArgs e)
                 {
+                    string text = PotentialAvailableAmount.Text;
+                    int spaceIndex = text.IndexOf(' ');
+                    int shopId = int.Parse(text.Substring(0, spaceIndex));
                     PotentialAvailableProductsList.Text = "";
                     double _anount = double.Parse(PotentialAvailableAmount.Text);
-                    int shopId = int.Parse(PotentialShopSelector.Text[0].ToString());
+                    //int shopId = int.Parse(PotentialShopSelector.Text[0].ToString());
 
-                    PossibleProductsFinder possibleProductsFinder = new PossibleProductsFinder();
-                    foreach (string item in possibleProductsFinder.Find(shopId, _anount))
+                    foreach (string item in App.DataService.FindProductsToBuy(shopId, _anount))
                     {
                         PotentialAvailableProductsList.Text += item + "\n";
                     }
@@ -215,20 +277,22 @@ namespace ShoppingApp
 
                 void PurchaseButton_click(object sender, RoutedEventArgs e)
                 {
+                    string text = PurchaseProductSelector.Text;
+                    int spaceIndex = text.IndexOf(' ');
+                    int _prodId = int.Parse(text.Substring(0, spaceIndex));
                     PurchaseResult.Text = "";
-                    int _prodId = int.Parse(PurchaseProductSelector.Text[0].ToString());
                     int _amount = int.Parse(PurchaseQuantity.Text);
-                    ProductsPurchaser productsPurchaser = new ProductsPurchaser();
-                    PurchaseResult.Text += productsPurchaser.BuyProducts(_prodId, _amount) + "\n";
+                    PurchaseResult.Text += App.DataService.BuyProducts(_prodId, _amount) + "\n";
                 }
 
                 void PurchasePriceButton_click (object sender, RoutedEventArgs e)
                 {
+                    string text = PurchaseProductSelector.Text;
+                    int spaceIndex = text.IndexOf(' ');
+                    int _prodId = int.Parse(text.Substring(0, spaceIndex));
                     PurchaseResult.Text = "";
-                    int _prodId = int.Parse(PurchaseProductSelector.Text[0].ToString());
                     int _amount = int.Parse(PurchaseQuantity.Text);
-                    ProductsPurchaser productsPurchaser = new ProductsPurchaser();
-                    PurchaseResult.Text += productsPurchaser.GetTheFinalPrice(_prodId, _amount) + "\n";
+                    PurchaseResult.Text += App.DataService.GetTheFinalPrice(_prodId, _amount) + "\n";
                 }
             }
         }
